@@ -1,0 +1,3 @@
+[submodule "fwd-inv-kinematics"]
+	path = fwd-inv-kinematics
+	url = https://github.com/karadalex/fwd-inv-kinematics

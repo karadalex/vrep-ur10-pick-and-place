@@ -16,7 +16,7 @@ function sysCall_threadmain()
 
     commandUR10 = function(inInts,inFloats,inStrings,inBuffer)
         robotFlag = true
-        if #inFloats==6 then
+        if #inFloats == 6 then
             targetPosition = inFloats
         end
         return {},{},{'Robot received command'},'' -- return a string
@@ -24,7 +24,7 @@ function sysCall_threadmain()
 
     -- Put your main loop here, e.g.:
     --
-    while sim.getSimulationState()~=sim.simulation_advancing_abouttostop do
+    while sim.getSimulationState() ~= sim.simulation_advancing_abouttostop do
         if robotFlag then
             moveUR10(targetPosition)
         end
@@ -55,21 +55,30 @@ end
 -- -------------------------------------------------------------------------
 
 function moveUR10(targetPosition)
-    jointHandles={-1,-1,-1,-1,-1,-1}
-    for i=1,6,1 do
-        jointHandles[i]=sim.getObjectHandle('UR10_joint'..i)
+    jointHandles = {-1,-1,-1,-1,-1,-1}
+    for i = 1,6,1 do
+        jointHandles[i] = sim.getObjectHandle('UR10_joint'..i)
     end
 
     -- Set-up some of the RML vectors:
-    vel=120
-    accel=40
-    jerk=80
-    currentVel={0,0,0,0,0,0,0}
-    currentAccel={0,0,0,0,0,0,0}
-    maxVel={vel*math.pi/180,vel*math.pi/180,vel*math.pi/180,vel*math.pi/180,vel*math.pi/180,vel*math.pi/180}
-    maxAccel={accel*math.pi/180,accel*math.pi/180,accel*math.pi/180,accel*math.pi/180,accel*math.pi/180,accel*math.pi/180}
-    maxJerk={jerk*math.pi/180,jerk*math.pi/180,jerk*math.pi/180,jerk*math.pi/180,jerk*math.pi/180,jerk*math.pi/180}
-    targetVel={0,0,0,0,0,0}
+    vel = 120
+    accel = 40
+    jerk = 80
+    currentVel = {0,0,0,0,0,0,0}
+    currentAccel = {0,0,0,0,0,0,0}
+    maxVel = {
+        vel*math.pi/180,vel*math.pi/180,vel*math.pi/180,
+        vel*math.pi/180,vel*math.pi/180,vel*math.pi/180
+    }
+    maxAccel = {
+        accel*math.pi/180,accel*math.pi/180,accel*math.pi/180,
+        accel*math.pi/180,accel*math.pi/180,accel*math.pi/180
+    }
+    maxJerk = {
+        jerk*math.pi/180,jerk*math.pi/180,jerk*math.pi/180,
+        jerk*math.pi/180,jerk*math.pi/180,jerk*math.pi/180
+    }
+    targetVel = {0,0,0,0,0,0}
 
     --targetPos1={90*math.pi/180,90*math.pi/180,-90*math.pi/180,90*math.pi/180,90*math.pi/180,90*math.pi/180}
     --sim.rmlMoveToJointPositions(jointHandles,-1,currentVel,currentAccel,maxVel,maxAccel,maxJerk,targetPos1,targetVel)
@@ -78,5 +87,10 @@ function moveUR10(targetPosition)
     --sim.rmlMoveToJointPositions(jointHandles,-1,currentVel,currentAccel,maxVel,maxAccel,maxJerk,targetPos2,targetVel)
 
     --targetPos3={0,0,0,0,0,0}
-    sim.rmlMoveToJointPositions(jointHandles,-1,currentVel,currentAccel,maxVel,maxAccel,maxJerk,targetPosition,targetVel)
+    sim.rmlMoveToJointPositions(
+        jointHandles,-1,
+        currentVel,currentAccel,
+        maxVel,maxAccel,maxJerk,
+        targetPosition,targetVel
+    )
 end

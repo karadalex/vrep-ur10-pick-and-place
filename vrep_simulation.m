@@ -27,8 +27,18 @@ if (clientID>-1)
     disp('Connected to remote API server');
 
     % Command UR10 robot
-    targetPosition = [90*pi/180, 90*pi/180, -90*pi/180, 90*pi/180, 90*pi/180, 90*pi/180];
-    moveRobot(targetPosition)
+    home = zeros(1,6);
+    path(1,:) = home;
+    path(2,:) = [pi/2,pi/2,-pi/4,5*pi/4,pi/2,pi/2];
+    path(3,:) = home;
+    path(4,:) = [-pi/2,0.2,pi/3,-pi/4,-pi/2,-pi/2];
+    path(5,:) = [-2,0.2,pi/3,-pi/4,-pi/2,-pi/2];
+    path(6,:) = [-2,-pi/6,pi/3,-pi/4,-pi/2,-pi/2];
+    path(7,:) = home;
+    for i = 1:1:7
+        moveRobot(path(i,:));
+        pause(5);
+    end
 
 else
     disp('Failed connecting to remote API server');

@@ -5,8 +5,8 @@ addpath('./ur-fwd-inv-kinematics');
 path = zeros(7,6);
 % solve IK for start and target positions of bottles
 for i=1:4
-    th = invKin(M_U_bis(:,:,i), M_joints, L, d, a);
-    path(1+i, :) = th(:,1);
+    th = invKin(M_0_6_bit(:,:,i), M_joints, L, d, a);
+    path(i, :) = th(:,1);
 end
 
 %% Start connection to V-REP
@@ -25,9 +25,11 @@ if (clientID>-1)
 
     % Command UR10 robot
     home = zeros(1,6);
-    path(1,:) = home;
-    path(6,:) = home;
-    for i = 1:1:6
+    home(2) = -pi/2;
+    home(4) = -pi/2;
+    
+    path(5,:) = home;
+    for i = 1:1:5
         moveRobot(clientID, vrep, path(i,:));
         pause(5);
     end

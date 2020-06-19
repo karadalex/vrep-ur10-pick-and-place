@@ -1,12 +1,25 @@
 %% Load target positions, orientations and paths
 referenceFrames
-
 addpath('./ur-fwd-inv-kinematics');
-path = zeros(7,6);
+
+path = zeros(9,6);
+
+home = zeros(1,6);
+home(2) = -pi/2;
+home(4) = -pi/2;
+
+path(1,:) = home;
+path(10,:) = home;
+    
 % solve IK for start and target positions of bottles
+k = 2;
 for i=1:4
+    th = invKin(M_0_6_bis(:,:,i), M_joints, L, d, a);
+    path(k, :) = th(:,1);
+    k = k + 1;
     th = invKin(M_0_6_bit(:,:,i), M_joints, L, d, a);
-    path(i, :) = th(:,1);
+    path(k, :) = th(:,1);
+    k = k + 1;
 end
 
 %% Start connection to V-REP
@@ -23,13 +36,8 @@ clientID=vrep.simxStart('127.0.0.1',19999,true,true,5000,5);
 if (clientID>-1)
     disp('Connected to remote API server');
 
-    % Command UR10 robot
-    home = zeros(1,6);
-    home(2) = -pi/2;
-    home(4) = -pi/2;
-    
-    path(5,:) = home;
-    for i = 1:1:5
+    % Command UR10 robot    
+    for i = 1:10
         moveRobot(clientID, vrep, path(i,:));
         pause(5);
     end

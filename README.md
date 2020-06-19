@@ -5,5 +5,5 @@ Simulate Universal Robot 10 in V-REP for picking and placing bottles from a box 
 Interface VREP with MATLAB.
 
 <p align="center">
-    <img src="./vrep/scene1.png">
+    <img src="./img/scene1.png">
 </p>

@@ -16,6 +16,8 @@ fcns.name{fcnNum}='mtlb_simxSetJointTargetVelocity'; fcns.calltype{fcnNum}='cdec
 fcns.name{fcnNum}='mtlb_simxSetJointTargetPosition'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
 % extern  simxInt mtlb_simxSetJointForce ( simxInt clientID , simxInt jointHandle , simxFloat* force , simxInt operationMode );
 fcns.name{fcnNum}='mtlb_simxSetJointForce'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
+% extern  simxInt mtlb_simxSetJointMaxForce ( simxInt clientID , simxInt jointHandle , simxFloat* force , simxInt operationMode );
+fcns.name{fcnNum}='mtlb_simxSetJointMaxForce'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
 % extern  simxInt mtlb_simxSetFloatSignal ( simxInt clientID , const simxChar * signalName , simxFloat* signalValue , simxInt operationMode );
 fcns.name{fcnNum}='mtlb_simxSetFloatSignal'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int8Ptr', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
 % extern  simxInt mtlb_simxSetObjectFloatParameter ( simxInt clientID , simxInt objectHandle , simxInt parameterID , simxFloat* parameterValue , simxInt operationMode );
@@ -50,6 +52,8 @@ fcns.name{fcnNum}='simxGetJointMatrix'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{
 fcns.name{fcnNum}='simxSetSphericalJointMatrix'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
 % extern  simxInt simxGetJointForce ( simxInt clientID , simxInt jointHandle , simxFloat * force , simxInt operationMode );
 fcns.name{fcnNum}='simxGetJointForce'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
+% extern  simxInt simxGetJointMaxForce ( simxInt clientID , simxInt jointHandle , simxFloat * force , simxInt operationMode );
+fcns.name{fcnNum}='simxGetJointMaxForce'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
 % extern  simxInt simxReadForceSensor ( simxInt clientID , simxInt forceSensorHandle , simxUChar * state , simxFloat * forceVector , simxFloat * torqueVector , simxInt operationMode );
 fcns.name{fcnNum}='simxReadForceSensor'; fcns.calltype{fcnNum}='cdecl'; fcns.LHS{fcnNum}='int32'; fcns.RHS{fcnNum}={'int32', 'int32', 'uint8Ptr', 'singlePtr', 'singlePtr', 'int32'};fcnNum=fcnNum+1;
 % extern  simxInt simxBreakForceSensor ( simxInt clientID , simxInt forceSensorHandle , simxInt operationMode );

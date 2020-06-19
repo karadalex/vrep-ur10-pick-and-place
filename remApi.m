@@ -1386,6 +1386,14 @@ classdef remApi
             [rtn force ] = calllib(obj.libName,'simxGetJointForce',clientID,jointHandle_,single(0),operationMode_);
         end
 
+        function [rtn force]= simxGetJointMaxForce(obj,clientID,jointHandle,operationMode)
+            jointHandle_ = int32(jointHandle);
+            operationMode_ = int32(operationMode);
+            force = libpointer('single',single(0));
+
+            [rtn force ] = calllib(obj.libName,'simxGetJointMaxForce',clientID,jointHandle_,single(0),operationMode_);
+        end
+
         function [rtn baseHandle]= simxLoadModel(obj,clientID,modelPathAndName,options,operationMode)
             modelPathAndName_ = libpointer('int8Ptr',[int8(modelPathAndName) 0]);
             options_ = uint8(options);
@@ -1833,6 +1841,14 @@ classdef remApi
             operationMode_ = int32(operationMode);
 
             [rtn ] = calllib(obj.libName,'mtlb_simxSetJointForce',clientID,objectHandle_,force_,operationMode_);
+        end
+
+        function [rtn ]= simxSetJointMaxForce(obj,clientID,objectHandle,force,operationMode)
+            objectHandle_ = int32(objectHandle);
+            force_ = libpointer('singlePtr',single(force));
+            operationMode_ = int32(operationMode);
+
+            [rtn ] = calllib(obj.libName,'mtlb_simxSetJointMaxForce',clientID,objectHandle_,force_,operationMode_);
         end
 
         function [rtn ]= simxSetFloatSignal(obj,clientID,signalName,signalValue,operationMode)

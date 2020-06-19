@@ -1,16 +1,13 @@
 %% Load target positions, orientations and paths
-% !! TIME CONSUMING: 
-% run once and save in workspace
 referenceFrames
-generalSolutions = invKinSym(M_joints);
-% solve IK for start and target positions of bottles
-startSol = zeros(64,6,4);
-targetSol = zeros(64,6,4);
-for i = 1:1:4
-    startSol(:,:,i) = ikSolutionSet(M_0_6_bis(:,:,i), generalSolutions);
-    targetSol(:,:,i) = ikSolutionSet(M_0_6_bit(:,:,i), generalSolutions);
-end
 
+addpath('./ur-fwd-inv-kinematics');
+path = zeros(7,6);
+% solve IK for start and target positions of bottles
+for i=1:4
+    th = invKin(M_U_bis(:,:,i), M_joints, L, d, a);
+    path(1+i, :) = th(:,1);
+end
 
 %% Start connection to V-REP
 % IMPORTANT: for each successful call to simxStart, there
@@ -29,14 +26,9 @@ if (clientID>-1)
     % Command UR10 robot
     home = zeros(1,6);
     path(1,:) = home;
-    path(2,:) = [pi/2,pi/2,-pi/4,5*pi/4,pi/2,pi/2];
-    path(3,:) = home;
-    path(4,:) = [-pi/2,0.2,pi/3,-pi/4,-pi/2,-pi/2];
-    path(5,:) = [-2,0.2,pi/3,-pi/4,-pi/2,-pi/2];
-    path(6,:) = [-2,-pi/6,pi/3,-pi/4,-pi/2,-pi/2];
-    path(7,:) = home;
-    for i = 1:1:7
-        moveRobot(path(i,:));
+    path(6,:) = home;
+    for i = 1:1:6
+        moveRobot(clientID, vrep, path(i,:));
         pause(5);
     end
 

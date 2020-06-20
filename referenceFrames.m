@@ -13,10 +13,10 @@ M_U_0 = pose(0,0,0,pi,0,0) * pose(0.2664, 0.2750, 0.819, -pi/2, 0, 0);
 M_0_U = invTransf(M_U_0);
 
 % bottle initial poses
-M_U_bis(:,:,1) = pose(0.7080, -0.1830, 0.8440, 0, 0, -pi);
-M_U_bis(:,:,2) = pose(0.7080, -0.2670, 0.8440, 0, 0, -pi);
-M_U_bis(:,:,3) = pose(0.7920, -0.1830, 0.8440, 0, 0, -pi);
-M_U_bis(:,:,4) = pose(0.7920, -0.2670, 0.8440, 0, 0, -pi);
+M_U_bis(:,:,1) = pose(0.7080, -0.1830, 0.8780, 0, 0, -pi);
+M_U_bis(:,:,2) = pose(0.7080, -0.2670, 0.8780, 0, 0, -pi);
+M_U_bis(:,:,3) = pose(0.7920, -0.1830, 0.8780, 0, 0, -pi);
+M_U_bis(:,:,4) = pose(0.7920, -0.2670, 0.8780, 0, 0, -pi);
 % Convert poses w.r.t. robot base {0} and end-effector {6}
 for i = 1:1:4
     M_0_6_bis(:,:,i) = double(M_0_U * M_U_bis(:,:,i) * M_TCP_6);

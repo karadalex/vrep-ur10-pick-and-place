@@ -11,48 +11,55 @@ clientID=vrep.simxStart('127.0.0.1',19999,true,true,5000,5);
 referenceFrames
 addpath('./ur-fwd-inv-kinematics');
 
-path = zeros(26,6);
+path = zeros(4,4,26);
+path_q = zeros(26,6);
 
 home = zeros(1,6);
 home(2) = -pi/2;
 home(4) = -pi/2;
 
-path(1,:) = home;
-path(26,:) = home;
+path_q(1,:) = home;
+path_q(26,:) = home;
     
 % solve IK for start and target positions of bottles
 k = 2;
 for i=1:4
     % PICK
     % Above starting point
-    th = invKin(M_0_6_bis(:,:,i)*pose(0,0,-0.2,0,0,0), M_joints, L, d, a);
-    path(k, :) = th(:,1);
+    path(:,:,k) = M_0_6_bis(:,:,i)*pose(0,0,-0.2,0,0,0);
+    th = invKin(path(:,:,k), M_joints, L, d, a);
+    path_q(k, :) = th(:,1);
     k = k + 1;
     
     % At starting point
-    th = invKin(M_0_6_bis(:,:,i), M_joints, L, d, a);
-    path(k, :) = th(:,1);
+    path(:,:,k) = M_0_6_bis(:,:,i);
+    th = invKin(path(:,:,k), M_joints, L, d, a);
+    path_q(k, :) = th(:,1);
     k = k + 1;
     
     % Above starting point (after having picked the bottle)
-    th = invKin(M_0_6_bis(:,:,i)*pose(0,0,-0.4,0,0,0), M_joints, L, d, a);
-    path(k, :) = th(:,1);
+    path(:,:,k) = M_0_6_bis(:,:,i)*pose(0,0,-0.4,0,0,0);
+    th = invKin(path(:,:,k), M_joints, L, d, a);
+    path_q(k, :) = th(:,1);
     k = k + 1;
     
     % PLACE
     % Approaching target point
-    th = invKin(M_0_6_bit(:,:,i)*pose(0,0,-0.5,0,0,0), M_joints, L, d, a);
-    path(k, :) = th(:,1);
+    path(:,:,k) = M_0_6_bit(:,:,i)*pose(0,0,-0.5,0,0,0);
+    th = invKin(path(:,:,k), M_joints, L, d, a);
+    path_q(k, :) = th(:,1);
     k = k + 1;
     
     % At target point
-    th = invKin(M_0_6_bit(:,:,i), M_joints, L, d, a);
-    path(k, :) = th(:,1);
+    path(:,:,k) = M_0_6_bit(:,:,i);
+    th = invKin(path(:,:,k), M_joints, L, d, a);
+    path_q(k, :) = th(:,1);
     k = k + 1;
     
     % Leaving target point (after having placed the bottle)
-    th = invKin(M_0_6_bit(:,:,i)*pose(0,0,-0.5,0,0,0), M_joints, L, d, a);
-    path(k, :) = th(:,1);
+    path(:,:,k) = M_0_6_bit(:,:,i)*pose(0,0,-0.5,0,0,0);
+    th = invKin(path(:,:,k), M_joints, L, d, a);
+    path_q(k, :) = th(:,1);
     k = k + 1;
 end
 
@@ -61,14 +68,41 @@ end
 figure('Name', 'Position-Velocity diagrams in joint space (non-smoothed path)');
 path_dot = zeros(26,6);
 for i=1:6
-    subplot(3,2,i);
     for j=1:25
-        path_dot(j,i) = (path(j+1,i)-path(j,i))/2;
+        path_dot(j,i) = (path_q(j+1,i)-path_q(j,i))/2;
     end
-    plot(1:26, path(:,i), 'b', 1:26, path_dot(:,i), 'g');
+    subplot(3,2,i);
+    plot(1:26, path_q(:,i), 'b', 1:26, path_dot(:,i), 'g');
     title("q"+i);
     xlabel("steps");
-    ylabel("rads, rads/s")
+    ylabel("rads, rads/s");
+end
+
+figure('Name', 'Position-Velocity diagrams in task space (non-smoothed path)');
+path_xyzrpy = zeros(26,6);
+path_xyzrpy_dot = zeros(26,6);
+plot_titles = ["x", "y", "z", "roll", "pitch", "yaw"];
+for k=1:26
+    path_xyzrpy(k,:) = pose2xyzrpy(path(:,:,k));
+end
+for i=1:6
+    for j=1:25
+        path_xyzrpy_dot(j,i) = (path_xyzrpy(j+1,i)-path_xyzrpy(j,i))/2;
+    end
+end
+for i=1:3
+    subplot(3,2,i);    
+    plot(1:26, path_xyzrpy(:,i), 'b', 1:26, path_xyzrpy_dot(:,i), 'g');
+    title(plot_titles(i));
+    xlabel("steps");
+    ylabel("m, m/s");
+end
+for i=4:6
+    subplot(3,2,i);    
+    plot(1:26, path_xyzrpy(:,i), 'b', 1:26, path_xyzrpy_dot(:,i), 'g');
+    title(plot_titles(i));
+    xlabel("steps");
+    ylabel("deg, deg/s");
 end
 
 %% Send commands to V-REP remoteApiServer
@@ -78,7 +112,7 @@ if (clientID>-1)
     % Command UR10 robot    
     for i = 1:26
         disp("step: "+i);
-        moveRobot(clientID, vrep, path(i,:));
+        moveRobot(clientID, vrep, path_q(i,:));
         pause(5);
     end
 

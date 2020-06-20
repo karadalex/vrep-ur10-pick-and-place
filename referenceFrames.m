@@ -7,9 +7,7 @@ a = [pi/2, 0, 0, pi/2, -pi/2, 0];
 M_6_TCP = pose(0, 0, 0.1606, 0, 0, 0);
 M_TCP_6 = invTransf(M_6_TCP);
 
-%M_U_0 = zyxPose(-0.2664, -0.2750, 0.8, 0, 0, -90);
 M_U_0 = pose(0,0,0,pi,0,0) * pose(0.2664, 0.2750, 0.819, -pi/2, 0, 0);
-%M_U_0 = zyxPose(0, 0, 0, 0, 0, -180);
 M_0_U = invTransf(M_U_0);
 
 % bottle initial poses

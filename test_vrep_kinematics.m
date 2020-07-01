@@ -8,6 +8,10 @@ vrep.simxFinish(-1); % just in case, close all opened connections
 clientID=vrep.simxStart('127.0.0.1',19999,true,true,5000,5);
 
 %% Test forward and inverse kinematics wrt to test reference frame
+d = [0.1273, 0, 0, 0.163941, 0.1157, 0.0922];
+L = [0, -0.612, -0.5723, 0, 0, 0];
+a = [pi/2, 0, 0, pi/2, -pi/2, 0];
+
 if (clientID>-1)
     disp('Connected to remote API server');
 
@@ -35,7 +39,7 @@ if (clientID>-1)
     % test again with invKin calculated angles
     M_0_6 = inv(M_U_0) * M_U_TCP * inv(M_6_TCP);
     angles = invKin(M_0_6, M_joints, L, d, a);
-    moveRobot(clientID, vrep, angles(:,8));
+    moveRobot(clientID, vrep, angles(:,1));
     pause(5);
     
     moveRobot(clientID, vrep, home);
@@ -52,3 +56,6 @@ end
 vrep.delete(); % call the destructor!
 
 disp('Program ended');
+
+%%
+moveRobot(clientID, vrep, angles(:,5));

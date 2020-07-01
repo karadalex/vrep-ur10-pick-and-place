@@ -105,6 +105,9 @@ for i=4:6
     ylabel("deg, deg/s");
 end
 
+figure('Name', 'Position diagram in 3D task space');
+plot3(path_xyzrpy(:,1), path_xyzrpy(:,2), path_xyzrpy(:,3));
+
 %% Send commands to V-REP remoteApiServer
 if (clientID>-1)
     disp('Connected to remote API server');

@@ -113,6 +113,7 @@ if (clientID>-1)
     for i = 1:26
         disp("step: "+i);
         moveRobot(clientID, vrep, path_q(i,:));
+        %disp(geometricJacobianNum(path_q(i,:), path(:,:,i), M_joints, 6));
         pause(5);
     end
 
